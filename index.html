@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Imeth's Lively Wallpaper</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    body {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: center;
+      min-height: 100vh;
+      overflow-y: auto;  /* Make the entire body scrollable */
+      background: linear-gradient(270deg, #00c9ff, #92fe9d, #f77062, #fe5196);
+      background-size: 800% 800%;
+      animation: gradientMove 25s ease infinite;
+      color: white;
+      position: relative;
+      text-align: center;
+      padding: 20px 0;
+    }
+
+    @keyframes gradientMove {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .content {
+      max-width: 1200px;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 20px;
+      margin-bottom: 30px;
+    }
+
+    .time {
+      font-size: 4em;
+      margin-bottom: 0.5em;
+    }
+
+    .greeting {
+      font-size: 2.5em;
+      margin-bottom: 1em;
+    }
+
+    .date {
+      font-size: 1.5em;
+      margin-bottom: 15px;
+    }
+
+    .search-bar {
+      width: 80%;
+      max-width: 600px;
+      margin-bottom: 20px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .search-bar input {
+      width: 100%;
+      padding: 12px 20px;
+      font-size: 1.2em;
+      border-radius: 25px;
+      border: none;
+      outline: none;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    }
+
+    .google-links,
+    .music-buttons {
+      display: flex;
+      gap: 15px;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-top: 15px;
+      margin-bottom: 30px;
+    }
+
+    .google-links a,
+    .music-buttons button {
+      text-decoration: none;
+      background: rgba(255, 255, 255, 0.3);
+      padding: 12px 20px;
+      border-radius: 25px;
+      color: white;
+      font-size: 1.2em;
+      backdrop-filter: blur(6px);
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .google-links a:hover,
+    .music-buttons button:hover {
+      background: rgba(255, 255, 255, 0.4);
+      transform: scale(1.1);
+    }
+
+    .projects {
+      margin-top: 20px;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 30px;
+    }
+
+    .projects h2 {
+      font-size: 2em;
+      margin-bottom: 20px;
+    }
+
+    .projects a {
+      display: block;
+      color: white;
+      font-size: 1.2em;
+      text-decoration: none;
+      padding: 12px 20px;
+      background: rgba(255, 255, 255, 0.3);
+      margin-bottom: 12px;
+      border-radius: 25px;
+      transition: all 0.3s ease;
+      width: 80%;
+      max-width: 600px;
+      text-align: center;
+    }
+
+    .projects a:hover {
+      background: rgba(255, 255, 255, 0.4);
+      transform: scale(1.05);
+    }
+
+    /* Sidebar Styles */
+    .sidebar {
+      width: 300px;
+      background: rgba(0, 0, 0, 0.3);
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      border-radius: 20px;
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      z-index: 10;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .sidebar img {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-bottom: 15px;
+      border: 3px solid white;
+    }
+
+    .about-me {
+      font-size: 1.1em;
+      text-align: center;
+      line-height: 1.5;
+      color: white;
+    }
+
+    .weather {
+      margin-top: 20px;
+      color: white;
+    }
+
+    /* Particle canvas */
+    #particle-canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="particle-canvas"></canvas>
+
+  <div class="sidebar">
+    <div class="profile-container">
+      <img src="me.png" alt="Your Photo" />
+      <div class="about-me">
+        <p><strong>Imeth Wimalaweera</strong></p>
+        <p>Hi! I'm a 13-year-old student at <strong>Ananda College</strong>.</p>
+        <p>I’m passionate about coding and love creating cool things with technology.</p>
+        <p>Outside of coding, I enjoy pizza 🍕 and orange juice 🍊.</p>
+        <p>Fun fact: My birthday is on <strong>June 21st</strong>! 🎉</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="content">
+    <div class="time" id="clock">00:00:00</div>
+    <div class="greeting" id="greeting">Good day, Imeth!</div>
+    <div class="date" id="date"></div>
+
+    <div class="search-bar">
+      <input type="text" id="search-input" placeholder="Search Google..." />
+    </div>
+
+    <!-- Google links and music buttons -->
+    <div class="google-links">
+      <a href="#" onclick="openExternal('https://drive.google.com')">📁 Drive</a>
+      <a href="#" onclick="openExternal('https://bard.google.com')">🤖 Bard</a>
+      <a href="#" onclick="openExternal('https://mail.google.com')">📧 Gmail</a>
+      <a href="#" onclick="openExternal('https://www.youtube.com')">📺 YouTube</a>
+      <a href="#" onclick="openExternal('https://photos.google.com')">📷 Photos</a>
+    </div>
+
+    <div class="music-buttons">
+      <button onclick="playMusic()">🎵 Play</button>
+      <button onclick="pauseMusic()">⏸️ Pause</button>
+    </div>
+
+    <!-- Projects Section -->
+    <div class="projects">
+      <h2>My Projects</h2>
+      <a href="https://imeth-anandacollege.github.io/snakes-ladders/" target="_blank">🎮 Snakes & Ladders</a>
+      <a href="https://imeth-anandacollege.github.io/BMI-calculator/" target="_blank">📐 BMI Calculator</a>
+      <a href="https://imeth-anandacollege.github.io/weather-checker/" target="_blank">🌦 Weather Checker</a>
+      <a href="https://imeth-anandacollege.github.io/palindrome-checker/" target="_blank">🔤 Palindrome Checker</a>
+      <a href="https://imeth-anandacollege.github.io/color-picker-tool/" target="_blank">🎨 Color Picker Tool</a>
+      <a href="https://imeth-anandacollege.github.io/Basic-calculator/" target="_blank">🧮 Basic Calculator</a>
+      <a href="https://imeth-anandacollege.github.io/random-quote-generator/" target="_blank">💬 Random Quote Generator</a>
+      <a href="https://imeth-anandacollege.github.io/typing-speed-tester/" target="_blank">⌨️ Typing Speed Tester</a>
+      <a href="https://imeth-anandacollege.github.io/rock-paper-scissors-game/" target="_blank">✊✋✌️ Rock Paper Scissors</a>
+      <a href="https://imeth-anandacollege.github.io/vowel-counter/" target="_blank">🔤 Vowel Counter</a>
+      <a href="https://imeth-anandacollege.github.io/todo-list/" target="_blank">📝 To-Do List</a>
+      <a href="https://imeth-anandacollege.github.io/digital-clock/" target="_blank">🕒 Digital Clock</a>
+      <a href="https://imeth-anandacollege.github.io/temperature-converter/" target="_blank">🌡 Temperature Converter</a>
+      <a href="https://imeth-anandacollege.github.io/Calender/" target="_blank">📅 Calendar</a>
+    </div>
+
+    <div class="weather" id="weather">
+      <div style="padding: 10px 20px; background: rgba(255, 255, 255, 0.2); border-radius: 15px; backdrop-filter: blur(5px); max-width: 250px; margin-top: 20px; font-size: 1em;">
+        <p id="weather-location">📍 Colombo</p>
+        <p id="weather-temp">Loading...</p>
+        <p id="weather-desc"></p>
+        <p id="weather-humidity"></p>
+        <p id="weather-wind"></p>
+      </div>
+    </div>
+  </div>
+
+  <audio id="bg-music" loop>
+    <source src="Count-On-Me.mp3" type="audio/mpeg" />
+  </audio>
+
+  <script>
+    function openExternal(url) {
+      const link = document.createElement("a");
+      link.href = url;
+      link.target = "_blank";
+      link.rel = "noopener noreferrer";
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+
+    function updateClockAndGreeting() {
+      const clock = document.getElementById('clock');
+      const greeting = document.getElementById('greeting');
+      const date = document.getElementById('date');
+      const now = new Date();
+      const hours = now.getHours();
+      const minutes = String(now.getMinutes()).padStart(2, '0');
+      const seconds = String(now.getSeconds()).padStart(2, '0');
+      clock.textContent = `${hours}:${minutes}:${seconds}`;
+
+      let greetText = "Hello, Imeth!";
+      if (hours >= 5 && hours < 12) greetText = "Good morning, Imeth 👋";
+      else if (hours >= 12 && hours < 17) greetText = "Good afternoon, Imeth ☀️";
+      else if (hours >= 17 && hours < 21) greetText = "Good evening, Imeth 🌇";
+      else greetText = "Good night, Imeth 🌙";
+      greeting.textContent = greetText;
+
+      const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+      date.textContent = now.toLocaleDateString(undefined, options);
+    }
+
+    window.onload = function () {
+      updateClockAndGreeting();
+      setInterval(updateClockAndGreeting, 1000);
+    };
+  </script>
+</body>
+</html>
